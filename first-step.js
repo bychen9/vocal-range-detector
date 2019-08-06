@@ -39,3 +39,5 @@ playbutton.onclick = function() {
         audio.play();
     }
 }
+
+localStorage.setItem('baseNote', 'C3'); 

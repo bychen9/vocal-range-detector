@@ -7,8 +7,15 @@ h1 {
   margin-top: 100px;
   font-size: 50px;
 }
-p {
+h2 {
+  margin-top: 75px;
+  font-size: 40px;
+}
+#determine {
   font-size: 30px;
+}
+p {
+  font-size: 25px;
 }
 button {
   font-family: "Gill Sans", sans-serif;
