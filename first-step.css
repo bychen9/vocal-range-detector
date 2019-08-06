@@ -10,3 +10,18 @@ h2 {
 p {
   font-size: 25px;
 }
+button {
+  font-family: "Gill Sans", sans-serif;
+  font-size: 25px;
+  padding: 15px 30px;
+  background-color: #36D3FF;
+  box-shadow: 0 7px #999;
+}
+button:hover {
+  background-color: #2CA5C7;
+}
+button:active {
+  background-color: #2CA5C7;
+  box-shadow: 0 3px #666;
+  transform: translateY(4px);
+}
