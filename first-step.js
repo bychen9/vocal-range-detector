@@ -1,11 +1,13 @@
 let audio = null;
+let mediaRecorder = null;
 let body = document.querySelector("body");
 let count = 0;
+makeRecordButton();
 
 function record() {
     navigator.mediaDevices.getUserMedia({ audio: true })
       .then(stream => {
-        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorder = new MediaRecorder(stream);
         mediaRecorder.start();
 
         const audioChunks = [];
@@ -17,21 +19,23 @@ function record() {
           const audioBlob = new Blob(audioChunks);
           const audioUrl = URL.createObjectURL(audioBlob);
           audio = new Audio(audioUrl);
-          count++;
-          let text = document.createElement("p");
-          let node = document.createTextNode("Recording " + count + "  complete");
-          text.append(node);
-          body.append(text);
+
+          let stopbutton = document.getElementById("stopbutton");
+          if (stopbutton != null) {
+             stopbutton.parentNode.removeChild(stopbutton);
+          }
+          makeRecordButton();
         });
-
-        setTimeout(() => {
-          mediaRecorder.stop();
-        }, 5000);
-      });
+      }).catch(rejectReason => {
+        console.log(rejectReason);
+        let stopbutton = document.getElementById("stopbutton");
+        if (stopbutton != null) {
+            stopbutton.parentNode.removeChild(stopbutton);
+        }
+        makeRecordButton();
+        alert("Please enable your microphone.");
+        });
 }
-
-let recordbutton = document.getElementById("recordbutton");
-recordbutton.onclick = record;
 
 let playbutton = document.getElementById("playbutton");
 playbutton.onclick = function() {
@@ -39,5 +43,29 @@ playbutton.onclick = function() {
         audio.play();
     }
 }
+
+function makeStopButton() {
+    let button = document.createElement("BUTTON");
+    button.innerHTML = "Stop Recording";
+    button.setAttribute("id", "stopbutton");
+    button.onclick = function() {
+        if (mediaRecorder != null) {
+            mediaRecorder.stop();
+        }
+    };
+    body.insertBefore(button, body.childNodes[3])
+};
+
+function makeRecordButton() {
+    let button = document.createElement("BUTTON");
+    button.innerHTML = "Record";
+    button.setAttribute("id", "recordbutton");
+    button.onclick = function() {
+        record();
+        makeStopButton();
+        button.parentNode.removeChild(button);
+    };
+    body.insertBefore(button, body.childNodes[3])
+};
 
 localStorage.setItem('baseNote', 'C3'); 
