@@ -21,9 +21,9 @@ if (fileName[0] == "second-step.html") {
 
 let i = 1;
 
-let octaveNumber = base.charAt(1); 
+let octaveNumber = base.charAt(1);
+let note;
 function nextNote() {
-    let note;
     if (fileName[0] == "second-step.html") {
         note = upNotes[(baseIndex + i) % 7];
         if (note === "A") {
@@ -51,4 +51,15 @@ pass.onclick = function() {
         noteToSing.parentNode.removeChild(noteToSing);
     }
     nextNote(); 
+}
+
+let fail = document.getElementById("fail");
+fail.onclick = function() {
+    if (fileName[0] === "second-step.html") {
+        localStorage.setItem('highNote', note + octaveNumber); 
+        location.href = "third-step.html";
+    } else {
+        localStorage.setItem('lowNote', note + octaveNumber);
+        location.href = "results.html";
+    }
 }
