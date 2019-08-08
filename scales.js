@@ -30,14 +30,16 @@ function nextNote() {
     if (fileName[0] == "second-step.html") {
         note = upNotes[(baseIndex + i) % 7];
         if (note === "A") {
-            prevOctave = octaveNumber;
             octaveNumber++;
+        } else if (note === "B") {
+            prevOctave = octaveNumber;
         }
     } else {
         note = downNotes[(baseIndex + i) % 7];
         if (note === "G") {
-            prevOctave = octaveNumber;
             octaveNumber--;
+        } else if (note === "F") {
+            prevOctave = octaveNumber;
         }
     }
     let singText = document.createElement("p");
