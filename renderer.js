@@ -88,20 +88,31 @@ async function process (data) {
   // Send the audio data to the audio processing worker.
   const sampleRate = audioBuffer.sampleRate;
   const pitch = analyseAudioData(440, sampleRate, audioData, accidentals = 'sharps');
-  let baseNote = pitch.key + pitch.octave;
-  console.log(baseNote);
+  let note = pitch.key + pitch.octave;
+  console.log(note);
   if (fileName[0] == "first-step.html") {
-    localStorage.setItem('baseNote', baseNote);
-    let text = document.createElement("p");
-    let node = document.createTextNode("Your base note is " + baseNote + ".");
-    text.append(node);
-    body.append(text);
-    
-    let button = document.createElement("BUTTON");
-    button.innerHTML = "Next Step";
-    button.setAttribute("onclick", "location.href = 'second-step.html'");
-    body.append(button);
-  }
+        localStorage.setItem('baseNote', note);
+        let text = document.createElement("p");
+        let node = document.createTextNode("Your base note is " + note + ".");
+        text.append(node);
+        body.append(text);
+        
+        let button = document.createElement("BUTTON");
+        button.innerHTML = "Next Step";
+        button.setAttribute("onclick", "location.href = 'second-step.html'");
+        body.append(button);
+  } else {
+        let text = document.createElement("p");
+        let node = document.createTextNode("You sang " + note + ".");
+        text.append(node);
+        body.append(text);
+        let noteToSing = document.getElementById("noteToSing");
+        if (note === noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 1)) {
+            pass();
+        } else {
+            fail();
+        }
+    }
 }
 
 /**

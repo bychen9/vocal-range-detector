@@ -1,6 +1,4 @@
-let fileName = location.href.split("/").slice(-1);
 let base = localStorage.getItem('baseNote');
-let body = document.querySelector("body");
 let text = document.createElement("p");
 let node = document.createTextNode("Your base note was " + base + ".");
 text.append(node);
@@ -51,22 +49,23 @@ function nextNote() {
 }
 nextNote();
 
-let pass = document.getElementById("pass");
-pass.onclick = function() {
+function pass() {
     let noteToSing = document.getElementById("noteToSing");
     if (noteToSing != null) {
         noteToSing.parentNode.removeChild(noteToSing);
     }
-    nextNote(); 
+    nextNote();
 }
 
-let fail = document.getElementById("fail");
-fail.onclick = function() {
+function fail() {
+    let button = document.createElement("BUTTON");
+    button.innerHTML = "Next Step";
     if (fileName[0] === "second-step.html") {
-        localStorage.setItem('highNote', prevNote + prevOctave); 
-        location.href = "third-step.html";
+        localStorage.setItem('highNote', prevNote + prevOctave);
+        button.setAttribute("onclick", "location.href = 'third-step.html'");
     } else {
         localStorage.setItem('lowNote', prevNote + prevOctave);
-        location.href = "results.html";
+        button.setAttribute("onclick", "location.href = 'results.html'");
     }
+    body.append(button);
 }
