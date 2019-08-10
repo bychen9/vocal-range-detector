@@ -1,8 +1,6 @@
 let audio = null;
 let mediaRecorder = null;
 let body = document.querySelector("body");
-let count = 0;
-
 makeRecordButton();
 
 function record() {
