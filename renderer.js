@@ -15,11 +15,23 @@ let mediaRecorder;
 let sourceStream;
 let refreshHandle;
 
-getMedia();
+let body = document.querySelector("body");
+makeRecordButton();
+let fileName = location.href.split("/").slice(-1);
 
 async function getMedia() {
-    sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
-    listen();
+    try {
+      sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
+      listen();
+    } catch(error) {
+        console.log(error);
+        let stopbutton = document.getElementById("stopbutton");
+        if (stopbutton != null) {
+            stopbutton.parentNode.removeChild(stopbutton);
+        }
+        makeRecordButton();
+        alert("Please enable your microphone.");
+    };
 }
 
 /**
@@ -30,7 +42,7 @@ function listen () {
 
   mediaRecorder.ondataavailable = update;
   mediaRecorder.start();
-  setTimeout(() => mediaRecorder.stop(), 1000);
+ // setTimeout(() => mediaRecorder.stop(), 1000);
 
   // Every 200ms, send whatever has been recorded to the audio processor.
   // This can't be done with `mediaRecorder.start(ms)` because the
@@ -41,8 +53,41 @@ function listen () {
     setTimeout(() => mediaRecorder.stop(), 200)
   }, 200);
   */
+ 
+  mediaRecorder.addEventListener("stop", () => {
+    console.log("stopped");
+    let stopbutton = document.getElementById("stopbutton");
+    if (stopbutton != null) {
+        stopbutton.parentNode.removeChild(stopbutton);
+    };
+    makeRecordButton();
+    });
+  
 }
+function makeStopButton() {
+    let button = document.createElement("BUTTON");
+    button.innerHTML = "Stop Recording";
+    button.setAttribute("id", "stopbutton");
+    button.onclick = function() {
+        if (mediaRecorder != null) {
+            clearInterval(refreshHandle);
+            mediaRecorder.stop();
+        }
+    };
+    body.insertBefore(button, body.childNodes[3])
+};
 
+function makeRecordButton() {
+    let button = document.createElement("BUTTON");
+    button.innerHTML = "Record";
+    button.setAttribute("id", "recordbutton");
+    button.onclick = function() {
+        getMedia();
+        makeStopButton();
+        button.parentNode.removeChild(button);
+    };
+    body.insertBefore(button, body.childNodes[3])
+};
 /**
  * Stops listening for audio.
  */
@@ -75,7 +120,15 @@ async function process (data) {
   // Send the audio data to the audio processing worker.
   const sampleRate = audioBuffer.sampleRate;
   const pitch = analyseAudioData(440, sampleRate, audioData, accidentals = 'sharps');
-  console.log(pitch.key+pitch.octave);
+  let baseNote = pitch.key + pitch.octave;
+  console.log(baseNote);
+  if (fileName[0] == "first-step.html") {
+    localStorage.setItem('baseNote', baseNote);
+    let text = document.createElement("p");
+    let node = document.createTextNode("Your base note is " + baseNote + ".");
+    text.append(node);
+    body.append(text);
+  }
 }
 
 /**

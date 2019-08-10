@@ -6,39 +6,39 @@ let node = document.createTextNode("Your base note was " + base + ".");
 text.append(node);
 body.insertBefore(text, body.childNodes[3]);
 
-let upNotes = ["A", "B", "C", "D", "E", "F", "G"];
-let downNotes = ["G", "F", "E", "D", "C", "B", "A"];
+let upNotes = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+let downNotes = ["G#", "G", "F#", "F", "E", "D#", "D", "C#", "C", "B", "A#", "A"];
 let baseIndex;
 if (fileName[0] == "second-step.html") {
     baseIndex = upNotes.findIndex(element => {
-        return element === base.charAt(0);
+        return element === base.substring(0, base.length - 1);
     });
 } else {
     baseIndex = downNotes.findIndex(element => {
-        return element == base.charAt(0);
+        return element == base.substring(0, base.length - 1);
     });
 }
 
 let i = 1;
-let octaveNumber = base.charAt(1);
+let octaveNumber = base.charAt(base.length -1);
 let prevOctave = octaveNumber;
-let note = base[0];
+let note = base.substring(0, base.length - 1);
 let prevNote = note;
 
 function nextNote() {
     prevNote = note;
     if (fileName[0] == "second-step.html") {
-        note = upNotes[(baseIndex + i) % 7];
+        note = upNotes[(baseIndex + i) % 12];
         if (note === "A") {
             octaveNumber++;
-        } else if (note === "B") {
+        } else if (note === "A#") {
             prevOctave = octaveNumber;
         }
     } else {
-        note = downNotes[(baseIndex + i) % 7];
-        if (note === "G") {
+        note = downNotes[(baseIndex + i) % 12];
+        if (note === "G#") {
             octaveNumber--;
-        } else if (note === "F") {
+        } else if (note === "G") {
             prevOctave = octaveNumber;
         }
     }
