@@ -16,20 +16,15 @@ let sourceStream;
 let refreshHandle;
 
 let body = document.querySelector("body");
-makeRecordButton();
 let fileName = location.href.split("/").slice(-1);
 
 async function getMedia() {
     try {
       sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
       listen();
+      setTimeout(() => stop(), 2000);
     } catch(error) {
         console.log(error);
-        let stopbutton = document.getElementById("stopbutton");
-        if (stopbutton != null) {
-            stopbutton.parentNode.removeChild(stopbutton);
-        }
-        makeRecordButton();
         alert("Please enable your microphone.");
     };
 }
@@ -53,47 +48,20 @@ function listen () {
     setTimeout(() => mediaRecorder.stop(), 200)
   }, 200);
   */
- 
-  mediaRecorder.addEventListener("stop", () => {
-    console.log("stopped");
-    let stopbutton = document.getElementById("stopbutton");
-    if (stopbutton != null) {
-        stopbutton.parentNode.removeChild(stopbutton);
-    };
-    makeRecordButton();
-    });
-  
-}
-function makeStopButton() {
-    let button = document.createElement("BUTTON");
-    button.innerHTML = "Stop Recording";
-    button.setAttribute("id", "stopbutton");
-    button.onclick = function() {
-        if (mediaRecorder != null) {
-            clearInterval(refreshHandle);
-            mediaRecorder.stop();
-        }
-    };
-    body.insertBefore(button, body.childNodes[3])
-};
+ }
 
-function makeRecordButton() {
-    let button = document.createElement("BUTTON");
-    button.innerHTML = "Record";
-    button.setAttribute("id", "recordbutton");
-    button.onclick = function() {
-        getMedia();
-        makeStopButton();
-        button.parentNode.removeChild(button);
-    };
-    body.insertBefore(button, body.childNodes[3])
-};
+let recordbutton = document.getElementById("recordbutton");
+recordbutton.onclick = getMedia;
 /**
  * Stops listening for audio.
  */
 function stop () {
   clearInterval(refreshHandle);
   mediaRecorder.stop();
+  let text = document.createElement("p");
+  let node = document.createTextNode("Recording Complete.");
+  text.append(node);
+  body.append(text);
 }
 
 /**
@@ -128,6 +96,11 @@ async function process (data) {
     let node = document.createTextNode("Your base note is " + baseNote + ".");
     text.append(node);
     body.append(text);
+    
+    let button = document.createElement("BUTTON");
+    button.innerHTML = "Next Step";
+    button.setAttribute("onclick", "location.href = 'second-step.html'");
+    body.append(button);
   }
 }
 
