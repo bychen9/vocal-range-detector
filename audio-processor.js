@@ -26,6 +26,8 @@ const steps = {
   B: 11
 }
 
+const a4 = 440;
+
 /**
  * Options for parsing audio data.
  * @typedef {Object} AnalyseAudioDataOptions
@@ -40,9 +42,8 @@ const steps = {
  * data could not be parsed.
  * @param {AnalyseAudioDataOptions} options Options for parsing.
  */
-function analyseAudioData (a4 = 440, sampleRate, audioData, accidentals = 'sharps') {
+function analyseAudioData (sampleRate, audioData, accidentals = 'sharps') {
   const frequency = YINDetector(audioData, sampleRate);
-  console.log(frequency);
   if (frequency === null) {
     return null
   }
@@ -68,4 +69,17 @@ function analyseAudioData (a4 = 440, sampleRate, audioData, accidentals = 'sharp
   const centsOff = 1200 * Math.log2(frequency / correctHz)
   /* eslint-enable capitalized-comments */
   return {frequency, octave, key, correctHz, centsOff}
+}
+
+function noteToFrequency(key, octave) {
+  return Math.fround(c0 * Math.pow(2.0, (steps[key] + (12 * octave)) / 12.0));
+}
+
+function playNote(key, octave) {
+    let oscillator = audioContext.createOscillator();
+    oscillator.type = "sine";
+    oscillator.connect(audioContext.destination);
+    oscillator.frequency.setValueAtTime(466.16, audioContext.currentTime);
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 2);
 }
