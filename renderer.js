@@ -25,8 +25,16 @@ recordbutton.onclick = getMedia;
 
 async function getMedia() {
     try {
-      sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
-      listen();
+        sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
+        listen();
+        let complete = document.getElementById("complete");
+        if (complete != null) {
+          complete.parentNode.removeChild(complete);
+        }
+        let yousang = document.getElementById("yousang");
+        if (yousang != null) {
+          yousang.parentNode.removeChild(yousang);
+        }
     } catch(error) {
         console.log(error);
         alert("Please enable your microphone.");
@@ -57,6 +65,7 @@ function stop () {
   clearInterval(refreshHandle);
   let text = document.createElement("p");
   let node = document.createTextNode("Recording Complete.");
+  text.setAttribute("id", "complete");
   text.append(node);
   body.append(text);
 }
@@ -104,6 +113,7 @@ async function process (data) {
       } else {
             let text = document.createElement("p");
             let node = document.createTextNode("You sang " + note + ".");
+            text.setAttribute("id", "yousang");
             text.append(node);
             body.append(text);
             let noteToSing = document.getElementById("noteToSing");

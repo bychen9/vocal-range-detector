@@ -27,16 +27,16 @@ function nextNote() {
     prevNote = note;
     if (fileName[0] == "second-step.html") {
         note = upNotes[(baseIndex + i) % 12];
-        if (note === "A") {
+        if (note === "C") {
             octaveNumber++;
-        } else if (note === "A#") {
+        } else if (note === "C#") {
             prevOctave = octaveNumber;
         }
     } else {
         note = downNotes[(baseIndex + i) % 12];
-        if (note === "G#") {
+        if (note === "B") {
             octaveNumber--;
-        } else if (note === "G") {
+        } else if (note === "A#") {
             prevOctave = octaveNumber;
         }
     }
@@ -58,14 +58,37 @@ function pass() {
 }
 
 function fail() {
-    let button = document.createElement("BUTTON");
-    button.innerHTML = "Next Step";
+    let next = document.createElement("BUTTON");
+    next.innerHTML = "Next Step";
+
+    let text = document.createElement("p");
+    let node;
+
     if (fileName[0] === "second-step.html") {
         localStorage.setItem('highNote', prevNote + prevOctave);
-        button.setAttribute("onclick", "location.href = 'third-step.html'");
+        next.setAttribute("onclick", "location.href = 'third-step.html'");
+        node = document.createTextNode("Your highest note is " + prevNote + prevOctave + ".");
     } else {
         localStorage.setItem('lowNote', prevNote + prevOctave);
-        button.setAttribute("onclick", "location.href = 'results.html'");
+        next.setAttribute("onclick", "location.href = 'results.html'");
+        node = document.createTextNode("Your lowest note is " + prevNote + prevOctave + ".");
     }
-    body.append(button);
+
+    text.append(node);
+
+    let tryagain = document.createElement("BUTTON");
+    tryagain.innerHTML = "Try Again";
+    tryagain.onclick = function() {
+        tryagain.parentNode.removeChild(tryagain);
+        if (next != null) {
+            next.parentNode.removeChild(next);
+        }
+        if (text != null) {
+            text.parentNode.removeChild(text);
+        }
+    }
+
+    body.append(text);
+    body.append(tryagain);
+    body.append(next);
 }

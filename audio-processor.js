@@ -72,14 +72,23 @@ function analyseAudioData (sampleRate, audioData, accidentals = 'sharps') {
 }
 
 function noteToFrequency(key, octave) {
-  return Math.fround(c0 * Math.pow(2.0, (steps[key] + (12 * octave)) / 12.0));
+    const c0 = a4 * Math.pow(2.0, -4.75)
+    return Math.fround(c0 * Math.pow(2.0, (steps[key] + (12 * octave)) / 12.0));
 }
 
 function playNote(key, octave) {
     let oscillator = audioContext.createOscillator();
     oscillator.type = "sine";
     oscillator.connect(audioContext.destination);
-    oscillator.frequency.setValueAtTime(466.16, audioContext.currentTime);
+    oscillator.frequency.setValueAtTime(noteToFrequency(key, octave), audioContext.currentTime);
     oscillator.start();
     oscillator.stop(audioContext.currentTime + 2);
+}
+let play = document.getElementById("play");
+if (play != null) {
+    play.onclick = function() {
+        let key = noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 2);
+        let octave = noteToSing.innerHTML.charAt(noteToSing.innerHTML.length - 2);
+        playNote(key, octave);
+    }
 }
