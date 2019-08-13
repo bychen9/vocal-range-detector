@@ -12,6 +12,7 @@ let recordbutton = document.getElementById("recordbutton");
 recordbutton.onclick = () => {
     getMedia();
     recordbutton.innerHTML = "Recording";
+    recordbutton.disabled = true;
     if (fileName[0] != "first-step.html") {
         play.disabled = true;
     }
@@ -33,6 +34,7 @@ async function getMedia() {
         console.log(error);
         alert("Please enable your microphone.");
         recordbutton.innerHTML = "Record";
+        recordbutton.disabled = false;
         if (fileName[0] != "first-step.html") {
             play.disabled = false;
         }
@@ -67,6 +69,7 @@ function stop () {
   text.append(node);
   body.append(text);
   recordbutton.innerHTML = "Record";
+  recordbutton.disabled = false;
   if (fileName[0] != "first-step.html") {
     play.disabled = false;
   }
