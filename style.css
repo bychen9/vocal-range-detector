@@ -53,5 +53,14 @@ ul  {
   background-color: #78BF81;
 }
 #voiceTypes {
-    text-align: center;
+  padding: 0px 250px;
+  text-align: center;
+}
+#femaleVoice {
+  width: 300px;
+  float: left;
+}
+#maleVoice {
+  width: 300px;
+  float: right;
 }
