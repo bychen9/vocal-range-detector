@@ -10,27 +10,27 @@ let fileName = location.href.split("/").slice(-1);
 
 let recordbutton = document.getElementById("recordbutton");
 recordbutton.onclick = () => {
-    getMedia();
-    recordbutton.innerHTML = "Recording";
+  getMedia();
+  recordbutton.innerHTML = "Recording";
 };
 
 async function getMedia() {
-    try {
-        sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
-        listen();
-        let complete = document.getElementById("complete");
-        if (complete != null) {
-          complete.parentNode.removeChild(complete);
-        }
-        let yousang = document.getElementById("yousang");
-        if (yousang != null) {
-          yousang.parentNode.removeChild(yousang);
-        }
-    } catch(error) {
-        console.log(error);
-        alert("Please enable your microphone.");
-        recordbutton.innerHTML = "Record";
-    };
+  try {
+    sourceStream = await navigator.mediaDevices.getUserMedia({audio: true});
+    listen();
+    let complete = document.getElementById("complete");
+    if (complete != null) {
+      complete.parentNode.removeChild(complete);
+    }
+    let yousang = document.getElementById("yousang");
+    if (yousang != null) {
+      yousang.parentNode.removeChild(yousang);
+    }
+  } catch(error) {
+    console.log(error);
+    alert("Please enable your microphone.");
+    recordbutton.innerHTML = "Record";
+  };
 }
 
 /**
@@ -45,10 +45,10 @@ function listen () {
   // This can't be done with `mediaRecorder.start(ms)` because the
   // `AudioContext` may fail to decode the audio data when sent in parts.
   refreshHandle = setInterval(() => {
-    mediaRecorder.start();
-    setTimeout(() => mediaRecorder.stop(), 500)
-  }, 1000);
- }
+      mediaRecorder.start();
+      setTimeout(() => mediaRecorder.stop(), 500);
+      }, 1000);
+}
 
 /**
  * Stops listening for audio.
@@ -86,47 +86,47 @@ async function process (data) {
   const audioData = audioBuffer.getChannelData(0);
   const sampleRate = audioBuffer.sampleRate;
   const pitch = analyseAudioData(sampleRate, audioData, accidentals = 'sharps');
-  
+
   updateNoteArray(pitch);
   if (noteArray.length == 2) {
-      stop(); 
-      let note = noteArray[0];    
-      if (fileName[0] == "first-step.html") {
-            localStorage.setItem("baseNote", note);
-            let text = document.createElement("p");
-            let node = document.createTextNode("Your base note is " + note + ".");
-            text.append(node);
-            body.append(text);
-            
-            let button = document.createElement("BUTTON");
-            button.innerHTML = "Next Step";
-            button.setAttribute("onclick", "location.href = 'second-step.html'");
-            body.append(button);
+    stop(); 
+    let note = noteArray[0];    
+    if (fileName[0] == "first-step.html") {
+      localStorage.setItem("baseNote", note);
+      let text = document.createElement("p");
+      let node = document.createTextNode("Your base note is " + note + ".");
+      text.append(node);
+      body.append(text);
+
+      let button = document.createElement("BUTTON");
+      button.innerHTML = "Next Step";
+      button.setAttribute("onclick", "location.href = 'second-step.html'");
+      body.append(button);
+    } else {
+      let text = document.createElement("p");
+      let node = document.createTextNode("You sang " + note + ".");
+      text.setAttribute("id", "yousang");
+      text.append(node);
+      body.append(text);
+      let noteToSing = document.getElementById("noteToSing");
+      if (note === noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 1)) {
+        pass();
       } else {
-            let text = document.createElement("p");
-            let node = document.createTextNode("You sang " + note + ".");
-            text.setAttribute("id", "yousang");
-            text.append(node);
-            body.append(text);
-            let noteToSing = document.getElementById("noteToSing");
-            if (note === noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 1)) {
-                pass();
-            } else {
-                fail();
-            }
-        }
+        fail();
+      }
+    }
   }
 }
 
 function updateNoteArray(pitch) {
-    let previousNote;
-    if (noteArray.length > 0) {
-        previousNote = noteArray[noteArray.length-1];
-    }
-    if (pitch == null || pitch.octave > 9 || (pitch.key+pitch.octave != previousNote && previousNote != null)) {
-        noteArray.length = 0;
-    }
-    else {
-        noteArray.push(pitch.key+pitch.octave)
-    }
+  let previousNote;
+  if (noteArray.length > 0) {
+    previousNote = noteArray[noteArray.length-1];
+  }
+  if (pitch == null || pitch.octave > 9 || (pitch.key+pitch.octave != previousNote && previousNote != null)) {
+    noteArray.length = 0;
+  }
+  else {
+    noteArray.push(pitch.key+pitch.octave)
+  }
 }
