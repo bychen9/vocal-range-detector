@@ -4,4 +4,4 @@ let body = document.querySelector("body");
 let text = document.createElement("p");
 let node = document.createTextNode(lowNote + " to " + highNote);
 text.append(node);
-body.append(text);
+body.insertBefore(text, body.childNodes[1]);
