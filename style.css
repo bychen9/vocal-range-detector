@@ -40,6 +40,10 @@ ol {
   display: table;
   margin: 0 auto;
 }
+ul  {
+    display: table;
+    margin: 0 auto;
+}
 #steps {
   border: 3px;
   border-style: solid;
@@ -47,4 +51,7 @@ ol {
   margin-left: 100px;
   margin-right: 100px;
   background-color: #78BF81;
+}
+#voiceTypes {
+    text-align: center;
 }

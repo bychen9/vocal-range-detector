@@ -1,15 +1,3 @@
-/*
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let oscillator = audioCtx.createOscillator();
-oscillator.type = "sine";
-oscillator.connect(audioCtx.destination);
-oscillator.frequency.setValueAtTime(466.16, audioContext.currentTime);
-oscillator.start();
-oscillator.stop(audioCtx.currentTime + 2);
-*/
-
-/* global AudioContext:false, Event:false, Worker:false, MediaRecorder:false, fetch:false, URL:false */
-
 const audioContext = new AudioContext();
 
 let mediaRecorder;
@@ -91,7 +79,6 @@ async function process (data) {
   // Decode the audio.
   const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
   const audioData = audioBuffer.getChannelData(0);
-  // Send the audio data to the audio processing worker.
   const sampleRate = audioBuffer.sampleRate;
   const pitch = analyseAudioData(sampleRate, audioData, accidentals = 'sharps');
   
@@ -124,32 +111,6 @@ async function process (data) {
             }
         }
   }
-
-  /*
-  if (fileName[0] == "first-step.html") {
-        localStorage.setItem("baseNote", note);
-        let text = document.createElement("p");
-        let node = document.createTextNode("Your base note is " + note + ".");
-        text.append(node);
-        body.append(text);
-        
-        let button = document.createElement("BUTTON");
-        button.innerHTML = "Next Step";
-        button.setAttribute("onclick", "location.href = 'second-step.html'");
-        body.append(button);
-  } else {
-        let text = document.createElement("p");
-        let node = document.createTextNode("You sang " + note + ".");
-        text.append(node);
-        body.append(text);
-        let noteToSing = document.getElementById("noteToSing");
-        if (note === noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 1)) {
-            pass();
-        } else {
-            fail();
-        }
-    }
-    */
 }
 
 function updateNoteArray(pitch) {
