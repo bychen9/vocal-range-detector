@@ -9,7 +9,10 @@ let body = document.querySelector("body");
 let fileName = location.href.split("/").slice(-1);
 
 let recordbutton = document.getElementById("recordbutton");
-recordbutton.onclick = getMedia;
+recordbutton.onclick = () => {
+    getMedia();
+    recordbutton.innerHTML = "Recording";
+};
 
 async function getMedia() {
     try {
@@ -26,6 +29,7 @@ async function getMedia() {
     } catch(error) {
         console.log(error);
         alert("Please enable your microphone.");
+        recordbutton.innerHTML = "Record";
     };
 }
 
@@ -56,6 +60,7 @@ function stop () {
   text.setAttribute("id", "complete");
   text.append(node);
   body.append(text);
+  recordbutton.innerHTML = "Record";
 }
 
 /**

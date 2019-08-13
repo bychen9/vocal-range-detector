@@ -86,9 +86,12 @@ function fail() {
         if (text != null) {
             text.parentNode.removeChild(text);
         }
+        recordbutton.disabled = false;
     }
 
     body.append(text);
     body.append(tryagain);
     body.append(next);
+
+    recordbutton.disabled = true;
 }
