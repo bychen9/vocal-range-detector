@@ -116,14 +116,20 @@ async function process (data) {
       body.append(button);
     } else {
       let text = document.createElement("p");
-      let node = document.createTextNode("You sang " + note + ".");
-      text.setAttribute("id", "yousang");
-      text.append(node);
-      body.append(text);
+      
       let noteToSing = document.getElementById("noteToSing");
-      if (note === noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 1)) {
+      let goal = noteToSing.innerHTML.substring(17, noteToSing.innerHTML.length - 1);
+      if (note === goal) {
+        let node = document.createTextNode("Nice! You correctly sang " + note + ".");
+        text.setAttribute("id", "yousang");
+        text.append(node);
+        body.append(text);
         pass();
       } else {
+        let node = document.createTextNode("Oops! You sang " + note + " instead of " + goal + "."); 
+        text.setAttribute("id", "yousang");
+        text.append(node);
+        body.append(text);
         fail();
       }
     }

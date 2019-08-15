@@ -89,8 +89,12 @@ function fail() {
     recordbutton.disabled = false;
   }
 
+  let div = document.createElement("div");
+  div.setAttribute("class", "divider");
+
   body.append(text);
   body.append(tryagain);
+  body.append(div);
   body.append(next);
 
   recordbutton.disabled = true;
